@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   SafeAreaView,
@@ -89,7 +88,7 @@ export default function AlarmScreen(): React.JSX.Element {
         if (!nextTimeA) return 1;
         if (!nextTimeB) return -1;
         
-        return nextTimeA - nextTimeB;
+        return nextTimeA.getTime() - nextTimeB.getTime();
       });
 
       await saveAlarms(updatedAlarms);
@@ -169,11 +168,11 @@ export default function AlarmScreen(): React.JSX.Element {
   };
 
   const renderEmpty = (): React.JSX.Element => (
-    <View style={styles.emptyContainer}>
+    <View className="flex-1 items-center justify-center pb-24">
       <Ionicons name="alarm-outline" size={48} color={Colors.textSecondary} />
-      <View style={styles.emptyTextContainer}>
-        <Text style={styles.emptyText}>No alarms set</Text>
-        <Text style={styles.emptySubText}>
+      <View className="items-center mt-4">
+        <Text className="text-lg font-semibold text-text-secondary mb-2">No alarms set</Text>
+        <Text className="text-sm text-text-secondary text-center">
           Tap the + button to create an alarm
         </Text>
       </View>
@@ -181,7 +180,7 @@ export default function AlarmScreen(): React.JSX.Element {
   );
 
   // Handle notification response (when user taps notification)
-  const handleNotificationResponse = ({ notification }: { notification: any }): void => {
+  const handleNotificationResponse = (notification: any): void => {
     const alarmId = notification.request.content.data.alarmId;
     const alarm = alarms.find(a => a.id === alarmId);
     if (alarm) {
@@ -190,7 +189,7 @@ export default function AlarmScreen(): React.JSX.Element {
   };
 
   // Handle received notification (when alarm triggers)
-  const handleNotificationReceived = ({ notification }: { notification: any }): void => {
+  const handleNotificationReceived = (notification: any): void => {
     const alarmId = notification.request.content.data.alarmId;
     const alarm = alarms.find(a => a.id === alarmId);
     if (alarm) {
@@ -230,7 +229,7 @@ export default function AlarmScreen(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-background">
       <FlatList
         data={alarms}
         keyExtractor={item => item.id}
@@ -243,11 +242,11 @@ export default function AlarmScreen(): React.JSX.Element {
           />
         )}
         ListEmptyComponent={renderEmpty}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
 
       <TouchableOpacity
-        style={styles.fab}
+        className="absolute right-4 bottom-4 w-14 h-14 rounded-full bg-primary justify-center items-center shadow-lg"
         onPress={() => setModalVisible(true)}
       >
         <Ionicons name="add" size={24} color={Colors.textPrimary} />
@@ -268,53 +267,3 @@ export default function AlarmScreen(): React.JSX.Element {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  listContent: {
-    flexGrow: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 100,
-  },
-  emptyTextContainer: {
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.textSecondary,
-    marginBottom: 8,
-  },
-  emptySubText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-});

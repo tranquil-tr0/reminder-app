@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { getNextAlarmTime } from './alarmUtils.js';
-import { Alarm } from '../types/index.js';
+import { getNextAlarmTime } from './alarmUtils';
+import { Alarm } from '../types';
 import { DateTriggerInput } from 'expo-notifications';
 
 // Configure notifications for alarms

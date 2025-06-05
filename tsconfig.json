@@ -4,20 +4,26 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"]
+      "*": [
+        "src/*"
+      ]
     },
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es2017"],
+    "lib": [
+      "es2017"
+    ],
     "moduleResolution": "bundler",
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "target": "esnext",
-    "types": ["react-native"]
+    "types": [
+      "react-native"
+    ]
   },
   "exclude": [
     "node_modules",
@@ -28,6 +34,7 @@
   "include": [
     "src/**/*",
     "App.tsx",
-    "index.js"
+    "index.js",
+    "nativewind-env.d.ts"
   ]
 }

@@ -9,7 +9,6 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import Colors from '../constants/Colors';
 import { createAlarm } from '../utils/alarmUtils';
 import { Alarm } from '../types';

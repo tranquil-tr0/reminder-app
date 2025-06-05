@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, Switch } from 'react-native';
 import Colors from '../constants/Colors';
 import { formatTime, formatWeekdays } from '../utils/alarmUtils';
 import { Alarm } from '../types';
@@ -16,35 +16,26 @@ const AlarmItem: React.FC<AlarmItemProps> = ({ alarm, onToggle, onPress, onDelet
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      className="px-4 py-3 border-b border-divider"
       onPress={() => onPress(alarm)}
       activeOpacity={0.7}
     >
-      <View style={styles.contentContainer}>
-        <View style={styles.mainContent}>
-          <Text style={[
-            styles.timeText,
-            !alarm.enabled && styles.disabledText
-          ]}>
+      <View className="flex-row justify-between items-center">
+        <View className="flex-1">
+          <Text className={`text-3xl font-light mb-1 ${alarm.enabled ? 'text-text-primary' : 'text-text-secondary opacity-70'}`}>
             {formatTime(alarmTime)}
           </Text>
           {alarm.label && (
-            <Text style={[
-              styles.labelText,
-              !alarm.enabled && styles.disabledText
-            ]}>
+            <Text className={`text-base mb-0.5 ${alarm.enabled ? 'text-text-primary' : 'text-text-secondary opacity-70'}`}>
               {alarm.label}
             </Text>
           )}
-          <Text style={[
-            styles.repeatText,
-            !alarm.enabled && styles.disabledText
-          ]}>
+          <Text className={`text-sm ${alarm.enabled ? 'text-text-secondary' : 'text-text-secondary opacity-70'}`}>
             {formatWeekdays(alarm.days)}
           </Text>
         </View>
         
-        <View style={styles.controls}>
+        <View className="flex-row items-center ml-4">
           <Switch
             value={alarm.enabled}
             onValueChange={() => onToggle(alarm.id)}
@@ -52,10 +43,10 @@ const AlarmItem: React.FC<AlarmItemProps> = ({ alarm, onToggle, onPress, onDelet
             thumbColor={Colors.textPrimary}
           />
           <TouchableOpacity
-            style={styles.deleteButton}
+            className="ml-4 p-2"
             onPress={() => onDelete(alarm.id)}
           >
-            <Text style={styles.deleteText}>Delete</Text>
+            <Text className="text-error text-sm">Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -64,53 +55,5 @@ const AlarmItem: React.FC<AlarmItemProps> = ({ alarm, onToggle, onPress, onDelet
 };
 
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  mainContent: {
-    flex: 1,
-  },
-  timeText: {
-    fontSize: 32,
-    fontWeight: '300',
-    color: Colors.textPrimary,
-    marginBottom: 4,
-  },
-  labelText: {
-    fontSize: 16,
-    color: Colors.textPrimary,
-    marginBottom: 2,
-  },
-  repeatText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-  },
-  disabledText: {
-    color: Colors.textSecondary,
-    opacity: 0.7,
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 16,
-  },
-  deleteButton: {
-    marginLeft: 16,
-    padding: 8,
-  },
-  deleteText: {
-    color: Colors.error,
-    fontSize: 14,
-  },
-});
 
 export default AlarmItem;

@@ -5,14 +5,14 @@ interface SoundManagerState {
   sound: Audio.Sound | null;
   isLoaded: boolean;
   isPlaying: boolean;
-  vibrationInterval: NodeJS.Timeout | null;
+  vibrationInterval: number | null;
 }
 
 class SoundManager implements SoundManagerState {
   sound: Audio.Sound | null = null;
   isLoaded: boolean = false;
   isPlaying: boolean = false;
-  vibrationInterval: NodeJS.Timeout | null = null;
+  vibrationInterval: number | null = null;
 
   /**
    * Load and cache alarm sound
@@ -140,7 +140,7 @@ class SoundManager implements SoundManagerState {
   }
 
   // Private methods
-  private _onPlaybackStatusUpdate = (status: Audio.PlaybackStatus): void => {
+  private _onPlaybackStatusUpdate = (status: any): void => {
     if (status.isLoaded) {
       this.isPlaying = status.isPlaying;
     }
