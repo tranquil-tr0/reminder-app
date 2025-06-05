@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
 import { RootTabParamList } from '../types';
 
 // Import screens
@@ -17,17 +16,17 @@ export default function AppNavigator(): React.JSX.Element {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: Colors.tabBarBackground,
-          borderTopColor: Colors.divider,
+          backgroundColor: '#1C1C1E', // tab-bar-background from tailwind config
+          borderTopColor: '#38383A', // divider from tailwind config
         },
-        tabBarActiveTintColor: Colors.tabBarActive,
-        tabBarInactiveTintColor: Colors.tabBarInactive,
+        tabBarActiveTintColor: '#2196F3', // tab-bar-active from tailwind config
+        tabBarInactiveTintColor: '#8E8E93', // tab-bar-inactive from tailwind config
         headerStyle: {
-          backgroundColor: Colors.background,
-          borderBottomColor: Colors.divider,
+          backgroundColor: '#1C1C1E', // background from tailwind config
+          borderBottomColor: '#38383A', // divider from tailwind config
           borderBottomWidth: 1,
         },
-        headerTintColor: Colors.textPrimary,
+        headerTintColor: '#FFFFFF', // text-primary from tailwind config
         headerTitleStyle: {
           fontWeight: '400',
         },

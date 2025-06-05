@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Modal,
@@ -84,94 +83,46 @@ export default function AlarmTriggeredModal({
       animationType="fade"
       onRequestClose={handleDismiss}
     >
-      <View style={styles.container}>
-        <Animated.View 
-          style={[
-            styles.contentContainer,
-            { transform: [{ scale: breatheAnim }] }
-          ]}
+      <View className="flex-1 bg-background justify-between items-center py-12">
+        <Animated.View
+          style={{ transform: [{ scale: breatheAnim }] }}
+          className="flex-1 justify-center items-center"
         >
-          <Text style={styles.time}>
+          <Text className="text-6xl font-light text-text-primary mb-4">
             {formatTime(new Date(alarm.time))}
           </Text>
           {alarm.label && (
-            <Text style={styles.label}>{alarm.label}</Text>
+            <Text className="text-2xl text-text-secondary text-center">{alarm.label}</Text>
           )}
         </Animated.View>
 
-        <View style={styles.buttonsContainer}>
+        <View className="flex-row justify-around px-8" style={{ width: SCREEN_WIDTH }}>
           <TouchableOpacity
-            style={styles.button}
+            className="items-center p-4"
             onPress={handleSnooze}
           >
-            <Ionicons 
-              name="time-outline" 
-              size={32} 
-              color={Colors.textPrimary} 
+            <Ionicons
+              name="time-outline"
+              size={32}
+              color={Colors.textPrimary}
             />
-            <Text style={styles.buttonText}>Snooze</Text>
-            <Text style={styles.buttonSubtext}>5 min</Text>
+            <Text className="text-base text-text-primary mt-2">Snooze</Text>
+            <Text className="text-sm text-text-secondary mt-1">5 min</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
+            className="items-center p-4"
             onPress={handleDismiss}
           >
-            <Ionicons 
-              name="close-circle-outline" 
-              size={32} 
-              color={Colors.textPrimary} 
+            <Ionicons
+              name="close-circle-outline"
+              size={32}
+              color={Colors.textPrimary}
             />
-            <Text style={styles.buttonText}>Dismiss</Text>
+            <Text className="text-base text-text-primary mt-2">Dismiss</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 48,
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  time: {
-    fontSize: 56,
-    fontWeight: '300',
-    color: Colors.textPrimary,
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 24,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: SCREEN_WIDTH,
-    paddingHorizontal: 32,
-  },
-  button: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: Colors.textPrimary,
-    marginTop: 8,
-  },
-  buttonSubtext: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginTop: 4,
-  },
-});

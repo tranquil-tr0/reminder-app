@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
   View,
   Text,
   Modal,
@@ -76,39 +75,39 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <View style={styles.header}>
+      <View className="flex-1 bg-black/50 justify-end">
+        <View className="bg-background rounded-t-3xl max-h-[90%]">
+          <View className="flex-row justify-between items-center p-4 border-b border-divider">
             <TouchableOpacity onPress={onClose}>
-              <Text style={styles.cancelButton}>Cancel</Text>
+              <Text className="text-base text-text-secondary">Cancel</Text>
             </TouchableOpacity>
-            <Text style={styles.title}>
+            <Text className="text-lg font-semibold text-text-primary">
               {initialAlarm ? 'Edit Alarm' : 'Add Alarm'}
             </Text>
             <TouchableOpacity onPress={handleSave}>
-              <Text style={styles.saveButton}>Save</Text>
+              <Text className="text-base text-primary font-semibold">Save</Text>
             </TouchableOpacity>
           </View>
 
           <ScrollView>
-            <View style={styles.timePickerContainer}>
+            <View className="py-5 border-b border-divider">
               <TouchableOpacity
-                style={styles.timeDisplay}
+                className="bg-surface p-5 rounded-lg items-center"
                 onPress={() => {
                   // For now, we'll use a simple time display
                   // In a real app, you'd implement a proper time picker modal
                 }}
               >
-                <Text style={styles.timeDisplayText}>
+                <Text className="text-3xl font-light text-text-primary mb-1">
                   {time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                 </Text>
-                <Text style={styles.timeDisplayLabel}>Tap to change time</Text>
+                <Text className="text-sm text-text-secondary">Tap to change time</Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.inputContainer}>
+            <View className="p-4 border-b border-divider">
               <TextInput
-                style={styles.labelInput}
+                className="text-base text-text-primary p-2 bg-surface rounded-lg"
                 placeholder="Alarm label"
                 placeholderTextColor={Colors.textSecondary}
                 value={label}
@@ -117,23 +116,21 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
               />
             </View>
 
-            <View style={styles.weekdaysContainer}>
-              <Text style={styles.sectionTitle}>Repeat</Text>
-              <View style={styles.weekdayButtons}>
+            <View className="p-4">
+              <Text className="text-base font-semibold text-text-primary mb-3">Repeat</Text>
+              <View className="flex-row flex-wrap justify-between">
                 {WEEKDAYS.map(day => (
                   <TouchableOpacity
                     key={day.id}
-                    style={[
-                      styles.dayButton,
-                      selectedDays.includes(day.id) && styles.dayButtonSelected,
-                    ]}
+                    className={`w-[13%] aspect-square justify-center items-center rounded-lg mb-2 ${
+                      selectedDays.includes(day.id) ? 'bg-primary' : 'bg-surface'
+                    }`}
                     onPress={() => toggleDay(day.id)}
                   >
                     <Text
-                      style={[
-                        styles.dayButtonText,
-                        selectedDays.includes(day.id) && styles.dayButtonTextSelected,
-                      ]}
+                      className={`text-sm text-text-primary ${
+                        selectedDays.includes(day.id) ? 'font-semibold' : ''
+                      }`}
                     >
                       {day.label}
                     </Text>
@@ -149,107 +146,5 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
 };
 
 
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: Colors.background,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    maxHeight: '90%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.textPrimary,
-  },
-  cancelButton: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-  },
-  saveButton: {
-    fontSize: 16,
-    color: Colors.primary,
-    fontWeight: '600',
-  },
-  timePickerContainer: {
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
-  },
-  timeDisplay: {
-    backgroundColor: Colors.surface,
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  timeDisplayText: {
-    fontSize: 32,
-    fontWeight: '300',
-    color: Colors.textPrimary,
-    marginBottom: 4,
-  },
-  timeDisplayLabel: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-  },
-  inputContainer: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
-  },
-  labelInput: {
-    fontSize: 16,
-    color: Colors.textPrimary,
-    padding: 8,
-    backgroundColor: Colors.surface,
-    borderRadius: 8,
-  },
-  weekdaysContainer: {
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.textPrimary,
-    marginBottom: 12,
-  },
-  weekdayButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  dayButton: {
-    width: '13%',
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  dayButtonSelected: {
-    backgroundColor: Colors.primary,
-  },
-  dayButtonText: {
-    fontSize: 14,
-    color: Colors.textPrimary,
-  },
-  dayButtonTextSelected: {
-    color: Colors.textPrimary,
-    fontWeight: '600',
-  },
-});
 
 export default AddAlarmModal;
