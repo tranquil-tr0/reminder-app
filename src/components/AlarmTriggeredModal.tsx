@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import {
   View,
-  Text,
   Modal,
-  TouchableOpacity,
   Dimensions,
   Animated,
 } from 'react-native';
+import { Text, Button, Surface, useTheme } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import soundManager from '../utils/soundManager';
 import { formatTime } from '../utils/alarmUtils';
@@ -29,6 +28,7 @@ export default function AlarmTriggeredModal({
 }: AlarmTriggeredModalProps): React.JSX.Element | null {
   // Animation value for breathing effect
   const breatheAnim = new Animated.Value(1);
+  const theme = useTheme();
 
   useEffect(() => {
     let breathingAnimation: Animated.CompositeAnimation | undefined;
@@ -82,46 +82,109 @@ export default function AlarmTriggeredModal({
       animationType="fade"
       onRequestClose={handleDismiss}
     >
-      <View className="flex-1 bg-background justify-between items-center py-12">
+      <Surface style={{
+        flex: 1,
+        backgroundColor: theme.colors.background,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 48
+      }}>
         <Animated.View
-          style={{ transform: [{ scale: breatheAnim }] }}
-          className="flex-1 justify-center items-center"
+          style={{ 
+            transform: [{ scale: breatheAnim }],
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
         >
-          <Text className="text-6xl font-light text-text-primary mb-4">
+          <Text 
+            variant="displayLarge"
+            style={{
+              color: theme.colors.onBackground,
+              marginBottom: 16,
+              fontWeight: '300'
+            }}
+          >
             {formatTime(new Date(alarm.time))}
           </Text>
           {alarm.label && (
-            <Text className="text-2xl text-text-secondary text-center">{alarm.label}</Text>
+            <Text 
+              variant="headlineSmall"
+              style={{
+                color: theme.colors.onSurfaceVariant,
+                textAlign: 'center',
+                paddingHorizontal: 32
+              }}
+            >
+              {alarm.label}
+            </Text>
           )}
         </Animated.View>
 
-        <View className="flex-row justify-around px-8" style={{ width: SCREEN_WIDTH }}>
-            <TouchableOpacity
-            className="items-center p-4"
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          paddingHorizontal: 32,
+          width: SCREEN_WIDTH
+        }}>
+          <Button
+            mode="outlined"
             onPress={handleSnooze}
-            >
-            <Ionicons
-              name="time-outline"
-              size={32}
-              className="text-text-primary"
-            />
-            <Text className="text-base text-text-primary mt-2">Snooze</Text>
-            <Text className="text-sm text-text-secondary mt-1">5 min</Text>
-            </TouchableOpacity>
+            icon={() => (
+              <Ionicons
+                name="time-outline"
+                size={24}
+                color={theme.colors.onSurface}
+              />
+            )}
+            contentStyle={{ 
+              paddingVertical: 8,
+              paddingHorizontal: 16,
+              flexDirection: 'column',
+              height: 80
+            }}
+            labelStyle={{ 
+              fontSize: 16,
+              marginTop: 8
+            }}
+            style={{ 
+              borderRadius: 12,
+              minWidth: 120
+            }}
+          >
+            Snooze{'\n'}5 min
+          </Button>
 
-            <TouchableOpacity
-            className="items-center p-4"
+          <Button
+            mode="contained"
             onPress={handleDismiss}
-            >
-            <Ionicons
-              name="close-circle-outline"
-              size={32}
-              className="text-text-primary"
-            />
-            <Text className="text-base text-text-primary mt-2">Dismiss</Text>
-          </TouchableOpacity>
+            icon={() => (
+              <Ionicons
+                name="close-circle-outline"
+                size={24}
+                color={theme.colors.onPrimary}
+              />
+            )}
+            contentStyle={{ 
+              paddingVertical: 8,
+              paddingHorizontal: 16,
+              flexDirection: 'column',
+              height: 80
+            }}
+            labelStyle={{ 
+              fontSize: 16,
+              marginTop: 8
+            }}
+            style={{ 
+              borderRadius: 12,
+              minWidth: 120
+            }}
+            buttonColor={theme.colors.primary}
+          >
+            Dismiss
+          </Button>
         </View>
-      </View>
+      </Surface>
     </Modal>
   );
 }

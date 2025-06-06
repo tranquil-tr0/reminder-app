@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { AppState, AppStateStatus } from 'react-native';
+import { AppState, AppStateStatus, useColorScheme } from 'react-native';
 import { Audio } from 'expo-av';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
 import AppNavigator from './src/navigation/AppNavigator';
 import soundManager from './src/utils/soundManager';
 import { cancelAllAlarmNotifications } from './src/utils/notificationUtils';
-import { useTheme } from './src/hooks/useTheme';
-import { getNavigationTheme } from './src/theme/navigationTheme';
 
 export default function App(): React.JSX.Element {
-  const { isDark } = useTheme();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   useEffect(() => {
     const initializeAudio = async (): Promise<void> => {
@@ -50,12 +49,18 @@ export default function App(): React.JSX.Element {
     };
   }, []);
 
+  const paperTheme = isDark ? MD3DarkTheme : MD3LightTheme;
+  const navigationTheme = isDark ? DarkTheme : DefaultTheme;
+
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={getNavigationTheme(isDark)}>
-        <StatusBar style={isDark ? "light" : "dark"} />
-        <AppNavigator />
-      </NavigationContainer>
+      <PaperProvider theme={paperTheme}>
+        <NavigationContainer theme={navigationTheme}>
+          <StatusBar style={isDark ? "light" : "dark"} />
+          <AppNavigator />
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaProvider>
   );
 }
+

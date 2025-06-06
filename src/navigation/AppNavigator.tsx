@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTheme } from 'react-native-paper';
 import { RootTabParamList } from '../types';
 
 // Import screens
@@ -9,21 +10,23 @@ import AlarmScreen from '../screens/AlarmScreen';
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export default function AppNavigator(): React.JSX.Element {
+  const theme = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: '#1C1C1E', // tab-bar-background from tailwind config
-          borderTopColor: '#38383A', // divider from tailwind config
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.outline,
         },
-        tabBarActiveTintColor: '#2196F3', // tab-bar-active from tailwind config
-        tabBarInactiveTintColor: '#8E8E93', // tab-bar-inactive from tailwind config
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
         headerStyle: {
-          backgroundColor: '#1C1C1E', // background from tailwind config
-          borderBottomColor: '#38383A', // divider from tailwind config
+          backgroundColor: theme.colors.surface,
+          borderBottomColor: theme.colors.outline,
           borderBottomWidth: 1,
         },
-        headerTintColor: '#FFFFFF', // text-primary from tailwind config
+        headerTintColor: theme.colors.onSurface,
         headerTitleStyle: {
           fontWeight: '400',
         },
