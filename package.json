@@ -17,7 +17,9 @@
     "@react-navigation/stack": "^7.3.3",
     "@types/expo": "^32.0.13",
     "expo": "^53.0.10",
+    "expo-alarm": "^0.2.1",
     "expo-av": "^15.1.5",
+    "expo-dev-client": "~5.2.0",
     "expo-haptics": "^14.1.4",
     "expo-notifications": "^0.31.3",
     "expo-status-bar": "~2.2.3",
@@ -26,8 +28,7 @@
     "react-native-paper": "^5.12.3",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.11.1",
-    "react-native-vector-icons": "^10.2.0",
-    "expo-dev-client": "~5.2.0"
+    "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

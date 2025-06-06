@@ -5,25 +5,29 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import { 
-  Text, 
-  FAB, 
-  Surface, 
-  useTheme as usePaperTheme 
+import {
+  Text,
+  FAB,
+  Surface,
+  Snackbar,
+  IconButton,
+  useTheme as usePaperTheme
 } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import AlarmItem from '../components/AlarmItem';
 import AddAlarmModal from '../components/AddAlarmModal';
 import AlarmTriggeredModal from '../components/AlarmTriggeredModal';
 import { loadAlarms, saveAlarms, updateAlarm, deleteAlarm } from '../utils/storageUtils';
-import { getNextAlarmTime } from '../utils/alarmUtils';
+import { getNextAlarmTime, getTimeUntilAlarm } from '../utils/alarmUtils';
 import {
   requestNotificationPermissions,
   scheduleAlarmNotification,
   cancelAlarmNotification,
   addNotificationResponseHandler,
   addNotificationReceivedHandler,
+  showAndroidSystemAlarms,
 } from '../utils/notificationUtils';
+import { isAndroidAlarmSupported } from '../utils/androidAlarmUtils';
 import { Alarm } from '../types';
 
 export default function AlarmScreen(): React.JSX.Element {
@@ -32,6 +36,8 @@ export default function AlarmScreen(): React.JSX.Element {
   const [selectedAlarm, setSelectedAlarm] = useState<Alarm | null>(null);
   const [triggeredAlarm, setTriggeredAlarm] = useState<Alarm | null>(null);
   const [notificationIds, setNotificationIds] = useState<Record<string, string>>({});
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const theme = usePaperTheme();
 
   // Initialize notifications and load alarms
@@ -72,14 +78,17 @@ export default function AlarmScreen(): React.JSX.Element {
   const handleSaveAlarm = async (alarm: Alarm): Promise<void> => {
     try {
       let updatedAlarms;
+      let isNewAlarm = false;
+      
       if (selectedAlarm) {
         // Edit existing alarm
-        updatedAlarms = alarms.map(a => 
+        updatedAlarms = alarms.map(a =>
           a.id === alarm.id ? alarm : a
         );
       } else {
         // Add new alarm
         updatedAlarms = [...alarms, alarm];
+        isNewAlarm = true;
       }
 
       // Sort alarms by time
@@ -97,6 +106,35 @@ export default function AlarmScreen(): React.JSX.Element {
       await saveAlarms(updatedAlarms);
       setAlarms(updatedAlarms);
       setSelectedAlarm(null);
+
+      // Show toast notification if alarm is enabled and it's a new alarm or edit
+      if (alarm.enabled) {
+        const timeUntil = getTimeUntilAlarm(alarm);
+        if (timeUntil) {
+          const actionText = isNewAlarm ? 'Alarm set' : 'Alarm updated';
+          setSnackbarMessage(`${actionText} - ${timeUntil}`);
+          setSnackbarVisible(true);
+        }
+      }
+
+      // Schedule notification for enabled alarms
+      if (alarm.enabled) {
+        const notificationId = await scheduleAlarmNotification(alarm);
+        if (notificationId) {
+          setNotificationIds(prev => ({
+            ...prev,
+            [alarm.id]: notificationId
+          }));
+          
+          // Show additional message for Android users about system alarms
+          if (isAndroidAlarmSupported() && notificationId.startsWith('android_alarm_')) {
+            setTimeout(() => {
+              setSnackbarMessage('Alarm set using Android system. You can manage it in your system alarm app.');
+              setSnackbarVisible(true);
+            }, 2000);
+          }
+        }
+      }
     } catch (error) {
       console.error('Error saving alarm:', error);
     }
@@ -119,6 +157,16 @@ export default function AlarmScreen(): React.JSX.Element {
             ...prev,
             [alarmId]: notificationId
           }));
+          
+          // Show appropriate message based on alarm type
+          const timeUntil = getTimeUntilAlarm(updatedAlarm);
+          if (timeUntil) {
+            const message = isAndroidAlarmSupported() && notificationId.startsWith('android_alarm_')
+              ? `Android system alarm enabled - ${timeUntil}`
+              : `Alarm enabled - ${timeUntil}`;
+            setSnackbarMessage(message);
+            setSnackbarVisible(true);
+          }
         }
       } else {
         const notificationId = notificationIds[alarmId];
@@ -129,6 +177,12 @@ export default function AlarmScreen(): React.JSX.Element {
             delete updated[alarmId];
             return updated;
           });
+          
+          // Show message about disabling Android alarms
+          if (isAndroidAlarmSupported() && notificationId.startsWith('android_alarm_')) {
+            setSnackbarMessage('Please disable the alarm in your system alarm app');
+            setSnackbarVisible(true);
+          }
         }
       }
 
@@ -301,6 +355,20 @@ export default function AlarmScreen(): React.JSX.Element {
     setTriggeredAlarm(null);
   };
 
+  // Handle showing Android system alarms
+  const handleShowSystemAlarms = async (): Promise<void> => {
+    try {
+      await showAndroidSystemAlarms();
+    } catch (error) {
+      console.error('Error showing system alarms:', error);
+      Alert.alert(
+        'Error',
+        'Could not open system alarm app',
+        [{ text: 'OK' }]
+      );
+    }
+  };
+
   return (
     <SafeAreaView 
       style={{ 
@@ -335,6 +403,21 @@ export default function AlarmScreen(): React.JSX.Element {
         }}
       />
 
+      {/* Show system alarms button for Android */}
+      {isAndroidAlarmSupported() && (
+        <FAB
+          icon="alarm"
+          size="small"
+          onPress={handleShowSystemAlarms}
+          style={{
+            position: 'absolute',
+            right: 16,
+            bottom: 88,
+            backgroundColor: theme.colors.secondaryContainer,
+          }}
+        />
+      )}
+
       <AddAlarmModal
         visible={modalVisible}
         onClose={handleCloseModal}
@@ -347,6 +430,19 @@ export default function AlarmScreen(): React.JSX.Element {
         onSnooze={handleSnooze}
         onDismiss={handleDismiss}
       />
+
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={4000}
+        style={{
+          backgroundColor: theme.colors.inverseSurface,
+        }}
+      >
+        <Text style={{ color: theme.colors.inverseOnSurface }}>
+          {snackbarMessage}
+        </Text>
+      </Snackbar>
     </SafeAreaView>
   );
 }

@@ -93,3 +93,40 @@ export const getNextAlarmTime = (alarm: Alarm): Date | null => {
   
   return nextTime;
 };
+
+/**
+ * Calculate time until alarm and format as human-readable string
+ * @param alarm Alarm object
+ * @returns Human-readable string like "in 4 hours" or "in 2 days 3 hours"
+ */
+export const getTimeUntilAlarm = (alarm: Alarm): string | null => {
+  const nextAlarmTime = getNextAlarmTime(alarm);
+  if (!nextAlarmTime) return null;
+
+  const now = new Date();
+  const timeDiff = nextAlarmTime.getTime() - now.getTime();
+  
+  if (timeDiff <= 0) return null;
+
+  const minutes = Math.floor(timeDiff / (1000 * 60));
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    const remainingHours = hours % 24;
+    if (remainingHours === 0) {
+      return `in ${days} day${days === 1 ? '' : 's'}`;
+    }
+    return `in ${days} day${days === 1 ? '' : 's'} ${remainingHours} hour${remainingHours === 1 ? '' : 's'}`;
+  } else if (hours > 0) {
+    const remainingMinutes = minutes % 60;
+    if (remainingMinutes === 0) {
+      return `in ${hours} hour${hours === 1 ? '' : 's'}`;
+    }
+    return `in ${hours} hour${hours === 1 ? '' : 's'} ${remainingMinutes} minute${remainingMinutes === 1 ? '' : 's'}`;
+  } else if (minutes > 0) {
+    return `in ${minutes} minute${minutes === 1 ? '' : 's'}`;
+  } else {
+    return 'in less than a minute';
+  }
+};
