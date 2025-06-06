@@ -5,11 +5,15 @@ import { StatusBar } from 'expo-status-bar';
 import { AppState, AppStateStatus } from 'react-native';
 import { Audio } from 'expo-av';
 import AppNavigator from './src/navigation/AppNavigator';
-import Colors from './src/constants/Colors';
 import soundManager from './src/utils/soundManager';
 import { cancelAllAlarmNotifications } from './src/utils/notificationUtils';
+import { useTheme } from './src/hooks/useTheme';
+import { getNavigationTheme } from './src/theme/navigationTheme';
+import './src/app.css';
 
 export default function App(): React.JSX.Element {
+  const { isDark } = useTheme();
+
   useEffect(() => {
     const initializeAudio = async (): Promise<void> => {
       try {
@@ -48,38 +52,8 @@ export default function App(): React.JSX.Element {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer
-        theme={{
-          dark: true,
-          colors: {
-            primary: Colors.primary,
-            background: Colors.background,
-            card: Colors.surface,
-            text: Colors.textPrimary,
-            border: Colors.divider,
-            notification: Colors.primary,
-          },
-          fonts: {
-            regular: {
-              fontFamily: 'System',
-              fontWeight: 'normal',
-            },
-            medium: {
-              fontFamily: 'System',
-              fontWeight: '500',
-            },
-            bold: {
-              fontFamily: 'System',
-              fontWeight: 'bold',
-            },
-            heavy: {
-              fontFamily: 'System',
-              fontWeight: '700',
-            },
-          },
-        }}
-      >
-        <StatusBar style="light" />
+      <NavigationContainer theme={getNavigationTheme(isDark)}>
+        <StatusBar style={isDark ? "light" : "dark"} />
         <AppNavigator />
       </NavigationContainer>
     </SafeAreaProvider>

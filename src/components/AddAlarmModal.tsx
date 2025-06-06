@@ -10,7 +10,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Colors from '../constants/Colors';
 import { createAlarm } from '../utils/alarmUtils';
 import { Alarm } from '../types';
 
@@ -91,28 +90,26 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
       transparent={true}
       onRequestClose={onClose}
     >
-      <View className="flex-1 justify-end" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+      <View className="flex-1 justify-end bg-black/50">
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="flex-1 justify-end"
         >
           <View className="bg-background rounded-t-3xl min-h-[60%] max-h-[90%]">
             {/* Header */}
-            <View className="flex-row justify-between items-center p-4 border-b border-divider">
-              <TouchableOpacity
-                onPress={onClose}
-                className="min-w-[60px] py-2"
-              >
-                <Text className="text-base text-text-secondary">Cancel</Text>
+            <View className="flex-row justify-between items-center px-4 py-4 border-b border-divider">
+              <TouchableOpacity onPress={onClose} className="min-w-[60px] py-2">
+                <Text className="text-base text-text-secondary">
+                  Cancel
+                </Text>
               </TouchableOpacity>
               <Text className="text-lg font-semibold text-text-primary">
                 {initialAlarm ? 'Edit Alarm' : 'Add Alarm'}
               </Text>
-              <TouchableOpacity
-                onPress={handleSave}
-                className="min-w-[60px] py-2"
-              >
-                <Text className="text-base text-primary font-semibold">Save</Text>
+              <TouchableOpacity onPress={handleSave} className="min-w-[60px] py-2">
+                <Text className="text-base text-primary font-semibold">
+                  Save
+                </Text>
               </TouchableOpacity>
             </View>
 
@@ -140,7 +137,7 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
                 <TextInput
                   className="text-base text-text-primary p-4 bg-surface rounded-2xl"
                   placeholder="Alarm label"
-                  placeholderTextColor={Colors.textSecondary}
+                  placeholderTextColor="#8E8E93"
                   value={label}
                   onChangeText={setLabel}
                   maxLength={30}
@@ -148,14 +145,16 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
               </View>
 
               {/* Weekday Selection Section */}
-              <View className="px-4 py-6">
+              <View className="px-4 py-6 border-b border-divider">
                 <Text className="text-base font-semibold text-text-primary mb-4">Repeat</Text>
                 <View className="flex-row justify-between gap-2">
                   {WEEKDAYS.map(day => (
                     <TouchableOpacity
                       key={day.id}
                       className={`flex-1 aspect-square justify-center items-center rounded-2xl ${
-                        selectedDays.includes(day.id) ? 'bg-primary' : 'bg-surface'
+                        selectedDays.includes(day.id)
+                          ? 'bg-primary'
+                          : 'bg-surface'
                       }`}
                       onPress={() => toggleDay(day.id)}
                       activeOpacity={0.7}
@@ -196,7 +195,9 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
               className="p-4 items-end"
               onPress={() => setShowTimePicker(false)}
             >
-              <Text className="text-primary font-semibold text-base">Done</Text>
+              <Text className="text-base text-primary font-semibold">
+                Done
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -204,7 +205,6 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
     </Modal>
   );
 };
-
 
 
 export default AddAlarmModal;

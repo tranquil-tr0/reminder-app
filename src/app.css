@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light theme colors */
+  --color-primary: #2196F3;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #6C757D;
+  --color-secondary-foreground: #FFFFFF;
+  
+  --color-background: #FFFFFF;
+  --color-foreground: #000000;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #000000;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #000000;
+  
+  --color-muted: #F8F9FA;
+  --color-muted-foreground: #6C757D;
+  --color-accent: #F8F9FA;
+  --color-accent-foreground: #000000;
+  
+  --color-destructive: #FF453A;
+  --color-destructive-foreground: #FFFFFF;
+  --color-success: #32D74B;
+  --color-success-foreground: #FFFFFF;
+  
+  --color-border: #E5E5E7;
+  --color-input: #E5E5E7;
+  --color-ring: #2196F3;
+  
+  --color-text-primary: #000000;
+  --color-text-secondary: #6C757D;
+  --color-text-muted: #8E8E93;
+  
+  --color-surface: #F2F2F7;
+  --color-divider: #C6C6C8;
+  
+  /* Tab bar colors */
+  --color-tab-bar-background: #F8F9FA;
+  --color-tab-bar-active: #2196F3;
+  --color-tab-bar-inactive: #8E8E93;
+}
+
+.dark {
+  /* Dark theme colors */
+  --color-primary: #2196F3;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #8E8E93;
+  --color-secondary-foreground: #FFFFFF;
+  
+  --color-background: #000000;
+  --color-foreground: #FFFFFF;
+  --color-card: #1C1C1E;
+  --color-card-foreground: #FFFFFF;
+  --color-popover: #1C1C1E;
+  --color-popover-foreground: #FFFFFF;
+  
+  --color-muted: #2C2C2E;
+  --color-muted-foreground: #8E8E93;
+  --color-accent: #2C2C2E;
+  --color-accent-foreground: #FFFFFF;
+  
+  --color-destructive: #FF453A;
+  --color-destructive-foreground: #FFFFFF;
+  --color-success: #32D74B;
+  --color-success-foreground: #FFFFFF;
+  
+  --color-border: #38383A;
+  --color-input: #38383A;
+  --color-ring: #2196F3;
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #8E8E93;
+  --color-text-muted: #6C6C70;
+  
+  --color-surface: #2C2C2E;
+  --color-divider: #38383A;
+  
+  /* Tab bar colors */
+  --color-tab-bar-background: #1C1C1E;
+  --color-tab-bar-active: #2196F3;
+  --color-tab-bar-inactive: #8E8E93;
+}
+
+/* Utility classes for common patterns */
+.bg-background {
+  background-color: var(--color-background);
+}
+
+.bg-card {
+  background-color: var(--color-card);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.text-foreground {
+  color: var(--color-foreground);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.border-border {
+  border-color: var(--color-border);
+}
+
+.border-divider {
+  border-color: var(--color-divider);
+}

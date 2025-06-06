@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
 import AlarmItem from '../components/AlarmItem';
 import AddAlarmModal from '../components/AddAlarmModal';
 import AlarmTriggeredModal from '../components/AlarmTriggeredModal';
@@ -21,7 +20,6 @@ import {
   addNotificationResponseHandler,
   addNotificationReceivedHandler,
 } from '../utils/notificationUtils';
-import Sounds from '../constants/Sounds';
 import { Alarm } from '../types';
 
 export default function AlarmScreen(): React.JSX.Element {
@@ -168,12 +166,14 @@ export default function AlarmScreen(): React.JSX.Element {
   };
 
   const renderEmpty = (): React.JSX.Element => (
-    <View className="flex-1 items-center justify-center pb-24">
-      <Ionicons name="alarm-outline" size={48} color={Colors.textSecondary} />
-      <View className="items-center mt-4">
-        <Text className="text-lg font-semibold text-text-secondary mb-2">No alarms set</Text>
-        <Text className="text-sm text-text-secondary text-center">
-          Tap the + button to create an alarm
+    <View className="flex-1 items-center justify-center pb-24 px-6">
+      <Ionicons name="alarm-outline" size={64} color="#8E8E93" />
+      <View className="items-center mt-6">
+        <Text className="text-xl font-semibold text-text-secondary mb-3">
+          No alarms set
+        </Text>
+        <Text className="text-base text-text-secondary text-center leading-6">
+          Tap the + button to create your first alarm
         </Text>
       </View>
     </View>
@@ -203,7 +203,7 @@ export default function AlarmScreen(): React.JSX.Element {
 
     // Create new alarm time 5 minutes from now
     const snoozeTime = new Date();
-    snoozeTime.setMinutes(snoozeTime.getMinutes() + Sounds.SNOOZE_DURATION);
+    snoozeTime.setMinutes(snoozeTime.getMinutes());
 
     const updatedAlarm = {
       ...triggeredAlarm,
@@ -243,13 +243,16 @@ export default function AlarmScreen(): React.JSX.Element {
         )}
         ListEmptyComponent={renderEmpty}
         contentContainerStyle={{ flexGrow: 1 }}
+        className="px-2"
+        showsVerticalScrollIndicator={false}
       />
 
       <TouchableOpacity
-        className="absolute right-4 bottom-4 w-14 h-14 rounded-full bg-primary justify-center items-center shadow-lg"
+        className="absolute right-4 bottom-4 w-16 h-16 rounded-full bg-primary justify-center items-center shadow-lg shadow-black/30"
         onPress={() => setModalVisible(true)}
+        activeOpacity={0.8}
       >
-        <Ionicons name="add" size={24} color={Colors.textPrimary} />
+        <Ionicons name="add" size={28} color="#FFFFFF" />
       </TouchableOpacity>
 
       <AddAlarmModal
@@ -267,3 +270,4 @@ export default function AlarmScreen(): React.JSX.Element {
     </SafeAreaView>
   );
 }
+
