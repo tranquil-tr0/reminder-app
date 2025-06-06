@@ -7,7 +7,9 @@ import {
   TextInput,
   ScrollView,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Colors from '../constants/Colors';
 import { createAlarm } from '../utils/alarmUtils';
 import { Alarm } from '../types';
@@ -40,6 +42,7 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
   );
   const [label, setLabel] = useState<string>(initialAlarm?.label || '');
   const [selectedDays, setSelectedDays] = useState<number[]>(initialAlarm?.days || []);
+  const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
 
   const handleSave = (): void => {
     const alarm = initialAlarm
@@ -68,6 +71,19 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
     );
   };
 
+  const onTimeChange = (event: any, selectedTime?: Date): void => {
+    if (Platform.OS === 'android') {
+      setShowTimePicker(false);
+    }
+    if (selectedTime) {
+      setTime(selectedTime);
+    }
+  };
+
+  const showTimePickerModal = (): void => {
+    setShowTimePicker(true);
+  };
+
   return (
     <Modal
       visible={visible}
@@ -75,71 +91,115 @@ const AddAlarmModal: React.FC<AddAlarmModalProps> = ({ visible, onClose, onSave,
       transparent={true}
       onRequestClose={onClose}
     >
-      <View className="flex-1 bg-black/50 justify-end">
-        <View className="bg-background rounded-t-3xl max-h-[90%]">
-          <View className="flex-row justify-between items-center p-4 border-b border-divider">
-            <TouchableOpacity onPress={onClose}>
-              <Text className="text-base text-text-secondary">Cancel</Text>
-            </TouchableOpacity>
-            <Text className="text-lg font-semibold text-text-primary">
-              {initialAlarm ? 'Edit Alarm' : 'Add Alarm'}
-            </Text>
-            <TouchableOpacity onPress={handleSave}>
-              <Text className="text-base text-primary font-semibold">Save</Text>
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView>
-            <View className="py-5 border-b border-divider">
+      <View className="flex-1 justify-end" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          className="flex-1 justify-end"
+        >
+          <View className="bg-background rounded-t-3xl min-h-[60%] max-h-[90%]">
+            {/* Header */}
+            <View className="flex-row justify-between items-center p-4 border-b border-divider">
               <TouchableOpacity
-                className="bg-surface p-5 rounded-lg items-center"
-                onPress={() => {
-                  // For now, we'll use a simple time display
-                  // In a real app, you'd implement a proper time picker modal
-                }}
+                onPress={onClose}
+                className="min-w-[60px] py-2"
               >
-                <Text className="text-3xl font-light text-text-primary mb-1">
-                  {time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                </Text>
-                <Text className="text-sm text-text-secondary">Tap to change time</Text>
+                <Text className="text-base text-text-secondary">Cancel</Text>
+              </TouchableOpacity>
+              <Text className="text-lg font-semibold text-text-primary">
+                {initialAlarm ? 'Edit Alarm' : 'Add Alarm'}
+              </Text>
+              <TouchableOpacity
+                onPress={handleSave}
+                className="min-w-[60px] py-2"
+              >
+                <Text className="text-base text-primary font-semibold">Save</Text>
               </TouchableOpacity>
             </View>
 
-            <View className="p-4 border-b border-divider">
-              <TextInput
-                className="text-base text-text-primary p-2 bg-surface rounded-lg"
-                placeholder="Alarm label"
-                placeholderTextColor={Colors.textSecondary}
-                value={label}
-                onChangeText={setLabel}
-                maxLength={30}
-              />
-            </View>
-
-            <View className="p-4">
-              <Text className="text-base font-semibold text-text-primary mb-3">Repeat</Text>
-              <View className="flex-row flex-wrap justify-between">
-                {WEEKDAYS.map(day => (
-                  <TouchableOpacity
-                    key={day.id}
-                    className={`w-[13%] aspect-square justify-center items-center rounded-lg mb-2 ${
-                      selectedDays.includes(day.id) ? 'bg-primary' : 'bg-surface'
-                    }`}
-                    onPress={() => toggleDay(day.id)}
-                  >
-                    <Text
-                      className={`text-sm text-text-primary ${
-                        selectedDays.includes(day.id) ? 'font-semibold' : ''
-                      }`}
-                    >
-                      {day.label}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+            <ScrollView
+              className="flex-1"
+              contentContainerStyle={{ paddingBottom: 20 }}
+              showsVerticalScrollIndicator={false}
+            >
+              {/* Time Picker Section */}
+              <View className="px-4 py-6 border-b border-divider">
+                <TouchableOpacity
+                  className="bg-surface p-6 rounded-2xl items-center"
+                  onPress={showTimePickerModal}
+                  activeOpacity={0.7}
+                >
+                  <Text className="text-4xl font-light text-text-primary mb-2">
+                    {time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                  </Text>
+                  <Text className="text-sm text-text-secondary">Tap to change time</Text>
+                </TouchableOpacity>
               </View>
-            </View>
-          </ScrollView>
-        </View>
+
+              {/* Label Input Section */}
+              <View className="px-4 py-6 border-b border-divider">
+                <TextInput
+                  className="text-base text-text-primary p-4 bg-surface rounded-2xl"
+                  placeholder="Alarm label"
+                  placeholderTextColor={Colors.textSecondary}
+                  value={label}
+                  onChangeText={setLabel}
+                  maxLength={30}
+                />
+              </View>
+
+              {/* Weekday Selection Section */}
+              <View className="px-4 py-6">
+                <Text className="text-base font-semibold text-text-primary mb-4">Repeat</Text>
+                <View className="flex-row justify-between gap-2">
+                  {WEEKDAYS.map(day => (
+                    <TouchableOpacity
+                      key={day.id}
+                      className={`flex-1 aspect-square justify-center items-center rounded-2xl ${
+                        selectedDays.includes(day.id) ? 'bg-primary' : 'bg-surface'
+                      }`}
+                      onPress={() => toggleDay(day.id)}
+                      activeOpacity={0.7}
+                    >
+                      <Text
+                        className={`text-sm ${
+                          selectedDays.includes(day.id)
+                            ? 'text-white font-semibold'
+                            : 'text-text-primary'
+                        }`}
+                      >
+                        {day.label}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+
+        {/* Time Picker Modal */}
+        {showTimePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={time}
+            mode="time"
+            is24Hour={false}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={onTimeChange}
+          />
+        )}
+        
+        {/* iOS Time Picker Done Button */}
+        {showTimePicker && Platform.OS === 'ios' && (
+          <View className="bg-background border-t border-divider">
+            <TouchableOpacity
+              className="p-4 items-end"
+              onPress={() => setShowTimePicker(false)}
+            >
+              <Text className="text-primary font-semibold text-base">Done</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </Modal>
   );

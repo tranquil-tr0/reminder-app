@@ -5,9 +5,6 @@ import { RootTabParamList } from '../types';
 
 // Import screens
 import AlarmScreen from '../screens/AlarmScreen';
-import TimerScreen from '../screens/TimerScreen';
-import StopwatchScreen from '../screens/StopwatchScreen';
-import ClockScreen from '../screens/ClockScreen';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -38,33 +35,6 @@ export default function AppNavigator(): React.JSX.Element {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="alarm" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Clock"
-        component={ClockScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="earth" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Timer"
-        component={TimerScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="timer-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Stopwatch"
-        component={StopwatchScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="timer" size={size} color={color} />
           ),
         }}
       />
