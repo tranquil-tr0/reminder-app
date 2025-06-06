@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Switch } from 'react-native';
-import Colors from '../constants/Colors';
 import { formatTime, formatWeekdays } from '../utils/alarmUtils';
 import { Alarm } from '../types';
 
@@ -39,8 +38,8 @@ const AlarmItem: React.FC<AlarmItemProps> = ({ alarm, onToggle, onPress, onDelet
           <Switch
             value={alarm.enabled}
             onValueChange={() => onToggle(alarm.id)}
-            trackColor={{ false: Colors.surface, true: Colors.primary }}
-            thumbColor={Colors.textPrimary}
+            trackColor={{ false: 'var(--color-surface)', true: 'var(--color-primary)' }}
+            thumbColor="var(--color-text-primary)"
           />
           <TouchableOpacity
             className="ml-4 p-2"

@@ -8,7 +8,6 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '../constants/Colors';
 import soundManager from '../utils/soundManager';
 import { formatTime } from '../utils/alarmUtils';
 import { Alarm } from '../types';
@@ -97,27 +96,28 @@ export default function AlarmTriggeredModal({
         </Animated.View>
 
         <View className="flex-row justify-around px-8" style={{ width: SCREEN_WIDTH }}>
-          <TouchableOpacity
+            <TouchableOpacity
             className="items-center p-4"
             onPress={handleSnooze}
-          >
+            >
             <Ionicons
               name="time-outline"
               size={32}
-              color={Colors.textPrimary}
+              // Use CSS variable for color, fallback to currentColor
+              color="var(--color-text-primary, currentColor)"
             />
             <Text className="text-base text-text-primary mt-2">Snooze</Text>
             <Text className="text-sm text-text-secondary mt-1">5 min</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity
+            <TouchableOpacity
             className="items-center p-4"
             onPress={handleDismiss}
-          >
+            >
             <Ionicons
               name="close-circle-outline"
               size={32}
-              color={Colors.textPrimary}
+              color="var(--color-text-primary, currentColor)"
             />
             <Text className="text-base text-text-primary mt-2">Dismiss</Text>
           </TouchableOpacity>
