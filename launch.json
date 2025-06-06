@@ -1,0 +1,8 @@
+{
+  "name": "Debug Exponent Hermes",
+  "request": "launch",
+  "type": "reactnativedirect",
+  "cwd": "${workspaceFolder}",
+  "platform": "exponent",
+  "expoHostType": "local"
+}
