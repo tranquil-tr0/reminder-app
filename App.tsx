@@ -4,12 +4,12 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AppState, AppStateStatus } from 'react-native';
 import { Audio } from 'expo-av';
+import { PaperProvider } from 'react-native-paper';
 import AppNavigator from './src/navigation/AppNavigator';
 import soundManager from './src/utils/soundManager';
 import { cancelAllAlarmNotifications } from './src/utils/notificationUtils';
 import { useTheme } from './src/hooks/useTheme';
 import { getNavigationTheme } from './src/theme/navigationTheme';
-import './src/app.css';
 
 export default function App(): React.JSX.Element {
   const { isDark } = useTheme();

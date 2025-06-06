@@ -167,14 +167,56 @@ export default function AlarmScreen(): React.JSX.Element {
 
   const renderEmpty = (): React.JSX.Element => (
     <View className="flex-1 items-center justify-center pb-24 px-6">
-      <Ionicons name="alarm-outline" size={64} color="#8E8E93" />
-      <View className="items-center mt-6">
-        <Text className="text-xl font-semibold text-text-secondary mb-3">
-          No alarms set
-        </Text>
-        <Text className="text-base text-text-secondary text-center leading-6">
-          Tap the + button to create your first alarm
-        </Text>
+      {/* Enhanced empty state */}
+      <View className="items-center">
+        {/* Large icon with background */}
+        <View className="w-32 h-32 rounded-full bg-surface items-center justify-center mb-6">
+          <View className="w-24 h-24 rounded-full items-center justify-center" style={{ backgroundColor: 'rgba(33, 150, 243, 0.1)' }}>
+            <Ionicons name="alarm-outline" size={48} color="#2196F3" />
+          </View>
+        </View>
+        
+        {/* Enhanced text content */}
+        <View className="items-center" style={{ maxWidth: 320 }}>
+          <Text className="text-2xl font-bold text-text-primary mb-2">
+            Wake up on time
+          </Text>
+          <Text className="text-lg font-medium text-text-secondary mb-4">
+            No alarms set
+          </Text>
+          <Text className="text-base text-text-secondary text-center mb-8" style={{ lineHeight: 24 }}>
+            Create your first alarm to never oversleep again. Set multiple alarms for different days of the week.
+          </Text>
+          
+          {/* Call-to-action button with enhanced styling */}
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            activeOpacity={0.8}
+            style={{
+              backgroundColor: '#2196F3',
+              paddingHorizontal: 32,
+              paddingVertical: 16,
+              borderRadius: 16,
+              shadowColor: '#2196F3',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 8,
+              elevation: 8,
+            }}
+          >
+            <View className="flex-row items-center">
+              <Ionicons name="add" size={20} color="#FFFFFF" />
+              <Text style={{
+                color: '#FFFFFF',
+                fontWeight: '600',
+                fontSize: 16,
+                marginLeft: 8
+              }}>
+                Create First Alarm
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -247,12 +289,37 @@ export default function AlarmScreen(): React.JSX.Element {
         showsVerticalScrollIndicator={false}
       />
 
+      {/* Enhanced floating action button */}
       <TouchableOpacity
-        className="absolute right-4 bottom-4 w-16 h-16 rounded-full bg-primary justify-center items-center shadow-lg shadow-black/30"
         onPress={() => setModalVisible(true)}
         activeOpacity={0.8}
+        style={{
+          position: 'absolute',
+          right: 24,
+          bottom: 24,
+          width: 64,
+          height: 64,
+          borderRadius: 32,
+          backgroundColor: '#2196F3',
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowColor: '#2196F3',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.4,
+          shadowRadius: 12,
+          elevation: 12,
+        }}
       >
-        <Ionicons name="add" size={28} color="#FFFFFF" />
+        <View style={{
+          width: 56,
+          height: 56,
+          borderRadius: 28,
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+          <Ionicons name="add" size={32} color="#FFFFFF" />
+        </View>
       </TouchableOpacity>
 
       <AddAlarmModal

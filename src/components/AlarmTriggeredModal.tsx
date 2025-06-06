@@ -103,8 +103,7 @@ export default function AlarmTriggeredModal({
             <Ionicons
               name="time-outline"
               size={32}
-              // Use CSS variable for color, fallback to currentColor
-              color="var(--color-text-primary, currentColor)"
+              className="text-text-primary"
             />
             <Text className="text-base text-text-primary mt-2">Snooze</Text>
             <Text className="text-sm text-text-secondary mt-1">5 min</Text>
@@ -117,7 +116,7 @@ export default function AlarmTriggeredModal({
             <Ionicons
               name="close-circle-outline"
               size={32}
-              color="var(--color-text-primary, currentColor)"
+              className="text-text-primary"
             />
             <Text className="text-base text-text-primary mt-2">Dismiss</Text>
           </TouchableOpacity>
